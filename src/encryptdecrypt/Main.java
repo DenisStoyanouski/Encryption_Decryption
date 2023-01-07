@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         text = input();
         key = Integer.parseInt(input());
-        encrypt();
+        System.out.println(encrypt());
 
     }
 
@@ -21,7 +21,11 @@ public class Main {
         StringBuilder decrypt = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {
-                decrypt.append((char) (97 - text.charAt(i) + 122));
+                char letter = (char) (text.charAt(i) + key);
+                if (letter > 122) {
+                    letter -= 26;
+                }
+                decrypt.append(letter);
             } else {
                 decrypt.append(text.charAt(i));
             }
