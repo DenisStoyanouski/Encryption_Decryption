@@ -6,17 +6,27 @@ public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
 
+    private static int key;
+
+    private static String text;
+
     public static void main(String[] args) {
-        String encrypt = "we found a treasure!";
+        text = input();
+        key = Integer.parseInt(input());
+        encrypt();
+
+    }
+
+    private static String encrypt() {
         StringBuilder decrypt = new StringBuilder();
-        for (int i = 0; i < encrypt.length(); i++) {
-            if (encrypt.charAt(i) >= 'a' && encrypt.charAt(i) <= 'z') {
-                decrypt.append((char) (97 - encrypt.charAt(i) + 122));
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) >= 'a' && text.charAt(i) <= 'z') {
+                decrypt.append((char) (97 - text.charAt(i) + 122));
             } else {
-                decrypt.append(encrypt.charAt(i));
+                decrypt.append(text.charAt(i));
             }
         }
-        System.out.println(decrypt);
+        return decrypt.toString();
     }
 
     private static String input() {
