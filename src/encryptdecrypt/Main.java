@@ -1,6 +1,11 @@
 package encryptdecrypt;
 
+import java.util.Scanner;
+
 public class Main {
+
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         String encrypt = "we found a treasure!";
         StringBuilder decrypt = new StringBuilder();
@@ -11,7 +16,10 @@ public class Main {
                 decrypt.append(encrypt.charAt(i));
             }
         }
-
         System.out.println(decrypt);
+    }
+
+    private static String input() {
+        return scanner.nextLine();
     }
 }
