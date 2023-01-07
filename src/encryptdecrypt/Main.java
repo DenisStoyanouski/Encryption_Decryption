@@ -1,19 +1,27 @@
 package encryptdecrypt;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
 
+    private static final Map<String, String> arguments = new HashMap<>();
+
     private static int key;
 
     private static String text;
 
     public static void main(String[] args) {
-        String mode = input();
-        text = input();
-        key = Integer.parseInt(input());
+        for (int i = 0; i < args.length; i += 2) {
+           arguments.put(args[i], args[i + 1]);
+        }
+
+        String mode = arguments.getOrDefault("-mode", "enc");
+        key = Integer.parseInt(arguments.getOrDefault("-key", "0"));
+        text = arguments.getOrDefault("-data", "");
 
         switch(mode) {
             case "enc" :
