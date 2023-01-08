@@ -3,13 +3,12 @@ package encryptdecrypt;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Main {
 
-    private static final Scanner scanner = new Scanner(System.in);
-
     private static final Map<String, String> arguments = new HashMap<>();
+
+    private static String mode;
 
     private static int key;
 
@@ -22,17 +21,8 @@ public class Main {
     private static String algorithm;
 
     public static void main(String[] args) {
-        for (int i = 0; i < args.length; i += 2) {
-           arguments.put(args[i], args[i + 1]);
-        }
 
-        String mode = arguments.getOrDefault("-mode", "enc");
-        key = Integer.parseInt(arguments.getOrDefault("-key", "0"));
-        text = arguments.getOrDefault("-data", "");
-        fileNameIn = arguments.getOrDefault("-in", "");
-        fileNameOut = arguments.getOrDefault("-out", "");
-        algorithm = arguments.getOrDefault("-alg", "");
-
+        getArguments(args);
 
         switch(mode) {
             case "enc" : encrypt();
@@ -43,11 +33,18 @@ public class Main {
                 System.out.println("Unknown mode");
                 break;
         }
-
     }
 
-    private static String input() {
-        return scanner.nextLine();
+    private static void getArguments(String[] args) {
+        for (int i = 0; i < args.length; i += 2) {
+            arguments.put(args[i], args[i + 1]);
+        }
+        mode = arguments.getOrDefault("-mode", "enc");
+        key = Integer.parseInt(arguments.getOrDefault("-key", "0"));
+        text = arguments.getOrDefault("-data", "");
+        fileNameIn = arguments.getOrDefault("-in", "");
+        fileNameOut = arguments.getOrDefault("-out", "");
+        algorithm = arguments.getOrDefault("-alg", "");
     }
 
     private static void encrypt() {
@@ -120,7 +117,7 @@ public class Main {
         }
     }
 
-    private static String readFile () {
+    private static String readFile() {
         StringBuilder data = new StringBuilder();
         File fileInput = new File(fileNameIn);
         try (FileReader fr = new FileReader(fileInput)) {
@@ -130,7 +127,7 @@ public class Main {
                letter = fr.read();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Error! File not found");;
+            System.out.println("Error! File not found");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
