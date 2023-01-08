@@ -1,7 +1,6 @@
 package encryptdecrypt;
 
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,6 +19,8 @@ public class Main {
 
     private static String fileNameOut;
 
+    private static String algorithm;
+
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i += 2) {
            arguments.put(args[i], args[i + 1]);
@@ -30,6 +31,8 @@ public class Main {
         text = arguments.getOrDefault("-data", "");
         fileNameIn = arguments.getOrDefault("-in", "");
         fileNameOut = arguments.getOrDefault("-out", "");
+        algorithm = arguments.getOrDefault("-alg", "");
+
 
         switch(mode) {
             case "enc" : encrypt();
@@ -52,10 +55,29 @@ public class Main {
         if (text.isEmpty()) {
             text = readFile();
         }
-        for (int i = 0; i < text.length(); i++) {
-            char letter = (char) (text.charAt(i) + key);
-            encrypt.append(letter);
+        if ("shift".equals(algorithm) || algorithm.isEmpty()) {
+            for (int i = 0; i < text.length(); i++) {
+                int letter = text.charAt(i);
+                if (letter >= 65 && letter <= 90) {
+                    letter += key;
+                    if (letter > 90) {
+                        letter = letter % 90 + 64;
+                    }
+                } else if(letter >= 97 && letter <= 122) {
+                    letter += key;
+                    if (letter > 122) {
+                        letter = letter % 122 + 96;
+                    }
+                }
+                encrypt.append((char) letter);
+            }
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                char letter = (char) (text.charAt(i) + key);
+                encrypt.append(letter);
+            }
         }
+
         if (fileNameOut.isEmpty()) {
             System.out.println(encrypt);
         } else {
@@ -69,9 +91,27 @@ public class Main {
         if (text.isEmpty()) {
             text = readFile();
         }
-        for (int i = 0; i < text.length(); i++) {
-            char letter = (char) (text.charAt(i) - key);
-            decrypt.append(letter);
+        if ("shift".equals(algorithm) || algorithm.isEmpty()) {
+            for (int i = 0; i < text.length(); i++) {
+                int letter = text.charAt(i);
+                if (letter >= 65 && letter <= 90) {
+                    letter -= key;
+                    if (letter < 65) {
+                        letter = letter + 26;
+                    }
+                } else if(letter >= 97 && letter <= 122) {
+                    letter -= key;
+                    if (letter < 97) {
+                        letter = letter + 26;
+                    }
+                }
+                decrypt.append((char) letter);
+            }
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                char letter = (char) (text.charAt(i) - key);
+                decrypt.append(letter);
+            }
         }
         if (fileNameOut.isEmpty()) {
             System.out.println(decrypt);
